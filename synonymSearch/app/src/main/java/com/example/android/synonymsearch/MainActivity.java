@@ -1,7 +1,5 @@
 package com.example.android.synonymsearch;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,13 +7,14 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.android.synonymsearch.rhyme.fetchRhyme;
 import com.example.android.synonymsearch.synonym.fetchSynonym;
 import com.example.android.synonymsearch.synonym.synonymWord;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -42,11 +41,11 @@ public class MainActivity extends AppCompatActivity
         String wordQuery = SearchBoxET.getText().toString();
 
         URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery);
-       // UrlDisplayTV.setText(synonymSearchUrl.toString());
+        UrlDisplayTV.setText(synonymSearchUrl.toString());
         new wordQueryTask().execute(synonymSearchUrl);
 
         URL rhymeSearchUrl = fetchRhyme.buildUrl(wordQuery);
-        UrlDisplayTV.setText(rhymeSearchUrl.toString());
+        UrlDisplayTV.append("\n" +rhymeSearchUrl.toString());
         new wordQueryTask().execute(rhymeSearchUrl);
 
     }
@@ -58,8 +57,6 @@ public class MainActivity extends AppCompatActivity
         {
             URL searchUrl = urls[0];
             synonymWord[] synonymResults;
-
-
 
             try
             {
@@ -76,22 +73,7 @@ public class MainActivity extends AppCompatActivity
                 return resultsToPrint;
             }
             catch (IOException e) { e.printStackTrace(); return null; }
-
-            /*if(synonymResults!=null)
-            {
-
-                String resultsToPrint[synonymResults.length];
-                resultsToPrint[0] = "Synonyms  ";
-                int i = 1;
-                for (synonymWord sr : synonymResults) {
-                    resultsToPrint[i] = sr.getWord() + "  ";
-                    i++;
-                }
-
-                return resultsToPrint;
-            }*/
-
-
+            
         }
 
         @Override
