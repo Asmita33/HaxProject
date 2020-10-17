@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.android.synonymsearch.antonym.fetchAntonym;
 import com.example.android.synonymsearch.rhyme.fetchRhyme;
 import com.example.android.synonymsearch.synonym.fetchSynonym;
 import com.example.android.synonymsearch.synonym.synonymWord;
@@ -40,11 +41,15 @@ public class MainActivity extends AppCompatActivity
     {
         String wordQuery = SearchBoxET.getText().toString();
 
-        URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery);
+        URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery); // for printing synonyms
         UrlDisplayTV.setText(synonymSearchUrl.toString());
         new wordQueryTask().execute(synonymSearchUrl);
 
-        URL rhymeSearchUrl = fetchRhyme.buildUrl(wordQuery);
+        URL antonymSearchUrl = fetchAntonym.buildUrl(wordQuery); // for printing antonyms
+        UrlDisplayTV.append("\n" +antonymSearchUrl.toString());
+        new wordQueryTask().execute(antonymSearchUrl);
+
+        URL rhymeSearchUrl = fetchRhyme.buildUrl(wordQuery); // for printing rhymes
         UrlDisplayTV.append("\n" +rhymeSearchUrl.toString());
         new wordQueryTask().execute(rhymeSearchUrl);
 
