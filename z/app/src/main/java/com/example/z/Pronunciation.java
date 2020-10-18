@@ -4,7 +4,7 @@ import android.speech.tts.TextToSpeech;
 
 public class Pronunciation {
 
-    void ponounce(String a)
+    void pronounce(String a)
     {
 
     }

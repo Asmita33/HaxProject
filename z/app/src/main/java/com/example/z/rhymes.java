@@ -32,8 +32,6 @@ public class rhymes extends AppCompatActivity {
     {
         String wordQuery = SearchBoxET.getText().toString();
 
-
-
         URL rhymeSearchUrl = fetchRhyme.buildUrl(wordQuery); // for printing rhymes
         UrlDisplayTV.append("\n"+rhymeSearchUrl.toString());
         new wordQueryTask().execute(rhymeSearchUrl);
@@ -46,16 +44,16 @@ public class rhymes extends AppCompatActivity {
         protected String[] doInBackground(URL... urls)
         {
             URL searchUrl = urls[0];
-            rhymeWord[] rhymeResults;
+            synonymWord[] synonymResults;
 
             try
             {
-                rhymeResults = fetchRhyme.getResponseFromUrl(searchUrl);
-                String[] resultsToPrint = new String[rhymeResults.length+1];
+                synonymResults = fetchSynonym.getResponseFromUrl(searchUrl);
+                String[] resultsToPrint = new String[synonymResults.length+1];
                 resultsToPrint[0] = "\n\nRhymes:";
 
                 int i=1;
-                for (rhymeWord sr : rhymeResults)
+                for (synonymWord sr : synonymResults)
                 {
                     resultsToPrint[i] = sr.getWord();
                     i++;
