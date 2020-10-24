@@ -1,4 +1,4 @@
-package com.example.android.synonymsearch.synonym;
+package com.example.android.synonymsearch.fetchClasses;
 
 public class synonymWord
 {

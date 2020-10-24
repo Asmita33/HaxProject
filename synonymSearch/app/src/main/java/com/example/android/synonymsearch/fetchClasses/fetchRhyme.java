@@ -1,8 +1,7 @@
-package com.example.android.synonymsearch.rhyme;
+package com.example.android.synonymsearch.fetchClasses;
 
 import android.net.Uri;
 
-import com.example.android.synonymsearch.rhyme.rhymeWord;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;

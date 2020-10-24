@@ -1,4 +1,4 @@
-package com.example.android.synonymsearch.rhyme;
+package com.example.android.synonymsearch.fetchClasses;
 
 public class rhymeWord {
 

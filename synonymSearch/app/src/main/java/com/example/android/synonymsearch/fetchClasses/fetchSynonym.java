@@ -1,8 +1,7 @@
-package com.example.android.synonymsearch.antonym;
+package com.example.android.synonymsearch.fetchClasses;
 
 import android.net.Uri;
 
-import com.example.android.synonymsearch.synonym.synonymWord;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -15,11 +14,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class fetchAntonym
+public class fetchSynonym
 {
     final static String baseUrl = "https://api.datamuse.com/words";
-    final static String wordQuery = "rel_ant";
+    final static String wordQuery = "rel_syn";
+    //String searchUrl = baseUrl+wordQuery;
 
+    //to take input and build url.
+    // There maybe another way.
+    // TO get the string directly from editText, you can extend AppCompatActivity, and use findViewById
+    // but this is easier
     public static URL buildUrl(String wordSearchQuery)
     {
         Uri builtUri  = Uri.parse(baseUrl).buildUpon()
@@ -34,24 +38,24 @@ public class fetchAntonym
         return url;
     }
 
-    // return array of antonyms
+    // return array of synonyms
     public static synonymWord[] getResponseFromUrl(URL url) throws IOException
     {
         Gson gson = new GsonBuilder().create();
-        synonymWord[] antonyms=null;
+        synonymWord[] synonyms=null;
 
         try
         {
             URLConnection urlcon = url.openConnection();
             BufferedReader br = new BufferedReader(new InputStreamReader(urlcon.getInputStream()));
 
-            antonyms = gson.fromJson(br,synonymWord[].class);
+            synonyms = gson.fromJson(br,synonymWord[].class);
 
         } catch (IOException e) { e.printStackTrace(); }
         catch (JsonSyntaxException e) { e.printStackTrace(); }
         catch (JsonIOException e) { e.printStackTrace(); }
 
-        return antonyms;
+        return synonyms;
     }
 
 

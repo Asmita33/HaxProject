@@ -10,6 +10,12 @@
     android:paddingRight="16dp"
     tools:context="com.example.android.synonymsearch.MainActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_speak"
+        android:text="speak"/>
+
     <EditText
         android:id="@+id/et_search_box"
         android:layout_width="match_parent"
