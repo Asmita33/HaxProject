@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Click search and the URL will show up here!"
-        android:textSize="22sp" />
+        android:textSize="12sp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,6 +41,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Make a search!"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
     </ScrollView>
 </LinearLayout>

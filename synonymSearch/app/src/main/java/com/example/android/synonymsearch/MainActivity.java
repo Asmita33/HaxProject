@@ -42,6 +42,12 @@ public class MainActivity extends AppCompatActivity
         SearchResultsTV = (TextView) findViewById(R.id.tv_api_search_results);
         speakButton = (Button) findViewById((R.id.button_speak));
 
+        speakResults();
+
+    }
+
+    public void speakResults()
+    {
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
@@ -60,7 +66,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
     public void onPause()
     {
         if(tts!=null)
