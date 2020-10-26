@@ -16,12 +16,13 @@
         android:id="@+id/button_speak"
         android:text="speak"/>
 
-    <EditText
-        android:id="@+id/et_search_box"
+    <MultiAutoCompleteTextView
+        android:id="@+id/MAC_TV_search_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter a word, then click Search"
-        android:textSize="22sp" />
+        android:ems="10"
+        android:hint="Type here..."
+         />
 
     <TextView
         android:id="@+id/tv_url_display"
@@ -40,7 +41,7 @@
             android:id="@+id/tv_api_search_results"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Make a search!"
+            android:hint="Search results will show up here"
             android:textSize="20sp" />
     </ScrollView>
 </LinearLayout>
