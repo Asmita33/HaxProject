@@ -8,10 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,7 +24,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
@@ -37,7 +34,8 @@ public class MainActivity extends AppCompatActivity
     private Button speakButton;
     TextToSpeech tts;
     String[] resultsHeading = {"\n\nSynonyms:", "\n\nAntonyms:", "\n\nRhymes:"};
-    int headingIndex=-1;
+    int headingIndex=-1;  // currently showing only 1 result, coz then arrayIndexOutOfBounds coz headingIndex >3 then.
+    // need a way to reset headingIndex to -1 after each search
 
 
     @Override
@@ -51,55 +49,6 @@ public class MainActivity extends AppCompatActivity
         SearchResultsTV = (TextView) findViewById(R.id.tv_api_search_results);
         speakButton = (Button) findViewById((R.id.button_speak));
 
-      /*  final ArrayList<String> dictionaryAL = new ArrayList<>();  // not working when put inside a thread
-        final BufferedReader[] br = {null};
-
-        new Thread((new Runnable() {
-            @Override
-            public void run() {
-                try
-                {
-                    br[0] = new BufferedReader(new InputStreamReader(getAssets()
-                            .open("dict.txt"), "UTF-8"));
-                    String currLine;
-                    while((currLine = br[0].readLine())!=null) dictionaryAL.add(currLine);
-
-                }
-                catch (UnsupportedEncodingException e) { e.printStackTrace(); }
-                catch (IOException e) { e.printStackTrace(); }
-
-            }
-        })); */
-
-    /*    ArrayList<String> dictionaryAL = new ArrayList<>();
-        BufferedReader br = null;
-        try
-        {
-            br = new BufferedReader(new InputStreamReader(getAssets()
-                    .open("dict.txt"), "UTF-8"));
-            String currLine;
-            while((currLine = br.readLine())!=null) dictionaryAL.add(currLine);
-
-        }
-        catch (UnsupportedEncodingException e) { e.printStackTrace(); }
-        catch (IOException e) { e.printStackTrace(); }
-
-        ArrayAdapter adapter = new
-                ArrayAdapter(this, android.R.layout.simple_list_item_1, dictionaryAL);
-
-        SearchBoxMACTV.setAdapter(adapter);
-        SearchBoxMACTV.setTokenizer(new SpaceTokenizer()); */
-        /* implementingAutoComplete autoComObject = new implementingAutoComplete();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    dictionaryAL = autoComObject.getDictHashSet();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
         doMultiAutoComplete();
         speakResults();
 
@@ -178,7 +127,6 @@ public class MainActivity extends AppCompatActivity
         URL rhymeSearchUrl = fetchRhyme.buildUrl(wordQuery); // for printing rhymes
         UrlDisplayTV.append("\n" +rhymeSearchUrl.toString());
         new wordQueryTask().execute(rhymeSearchUrl);
-        //headingIndex=-1;
 
     }
 
@@ -219,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                     SearchResultsTV.append((s) + "\n\n");
                 }
             }
-           
+
         }
 
     }
