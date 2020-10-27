@@ -17,6 +17,9 @@ import com.example.android.synonymsearch.fetchClasses.fetchAntonym;
 import com.example.android.synonymsearch.fetchClasses.fetchRhyme;
 import com.example.android.synonymsearch.fetchClasses.fetchSynonym;
 import com.example.android.synonymsearch.fetchClasses.synonymWord;
+import com.example.android.synonymsearch.fetchClasses.fetchMeansLike;
+import com.example.android.synonymsearch.fetchClasses.fetchSimilarSounds;
+import com.example.android.synonymsearch.fetchClasses.fetchTriggers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,7 +36,10 @@ public class MainActivity extends AppCompatActivity
     private TextView SearchResultsTV;
     private Button speakButton;
     TextToSpeech tts;
-    String[] resultsHeading = {"\n\nSynonyms:", "\n\nAntonyms:", "\n\nRhymes:"};
+    String[] resultsHeading = {"\n\nSynonyms:", "\n\nAntonyms:",
+            "\n\nWords with similar usages:",
+            "\n\nRhymes:", "\n\nWords with similar sounds:",
+    "\n\nWords triggered from this word:"};
     int headingIndex=-1;  // currently showing only 1 result, coz then arrayIndexOutOfBounds coz headingIndex >3 then.
     // need a way to reset headingIndex to -1 after each search
 
@@ -124,9 +130,21 @@ public class MainActivity extends AppCompatActivity
         UrlDisplayTV.append("\n" +antonymSearchUrl.toString());
         new wordQueryTask().execute(antonymSearchUrl);
 
+        URL meansLikeUrl = fetchMeansLike.buildUrl(wordQuery); // for words with similar meanings
+        UrlDisplayTV.append("\n" +meansLikeUrl.toString());
+        new wordQueryTask().execute(meansLikeUrl);
+
         URL rhymeSearchUrl = fetchRhyme.buildUrl(wordQuery); // for printing rhymes
         UrlDisplayTV.append("\n" +rhymeSearchUrl.toString());
         new wordQueryTask().execute(rhymeSearchUrl);
+
+        URL similarSoundUrl = fetchSimilarSounds.buildUrl(wordQuery); // for words with similar sounds
+        UrlDisplayTV.append("\n" +similarSoundUrl.toString());
+        new wordQueryTask().execute(similarSoundUrl);
+
+        URL triggersUrl = fetchTriggers.buildUrl(wordQuery); // to print triggers
+        UrlDisplayTV.append("\n" +triggersUrl.toString());
+        new wordQueryTask().execute(triggersUrl);
 
     }
 
