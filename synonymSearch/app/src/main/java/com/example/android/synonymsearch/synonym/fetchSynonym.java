@@ -6,13 +6,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class fetchSynonym
 {
@@ -42,14 +46,18 @@ public class fetchSynonym
     public static synonymWord[] getResponseFromUrl(URL url) throws IOException
     {
         Gson gson = new GsonBuilder().create();
-        synonymWord[] synonyms=null;
+        //List<synonymWord> synonyms= new ArrayList<synonymWord>();
+        //Type listType = new TypeToken<ArrayList<synonymWord>>(){}.getType();
+        //ArrayList<synonymWord> synonyms = null;
+        synonymWord[] synonyms = null;
 
         try
         {
             URLConnection urlcon = url.openConnection();
             BufferedReader br = new BufferedReader(new InputStreamReader(urlcon.getInputStream()));
 
-            synonyms = gson.fromJson(br,synonymWord[].class);
+            synonyms = gson.fromJson(br, synonymWord[].class);
+            //synonyms = gson.fromJson(br,listType);
 
         } catch (IOException e) { e.printStackTrace(); }
         catch (JsonSyntaxException e) { e.printStackTrace(); }

@@ -16,6 +16,8 @@ import com.example.android.synonymsearch.synonym.synonymWord;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity
         UrlDisplayTV.setText(synonymSearchUrl.toString());
         new wordQueryTask().execute(synonymSearchUrl);
 
-        URL antonymSearchUrl = fetchAntonym.buildUrl(wordQuery); // for printing antonyms
+       URL antonymSearchUrl = fetchAntonym.buildUrl(wordQuery); // for printing antonyms
         UrlDisplayTV.append("\n" +antonymSearchUrl.toString());
         new wordQueryTask().execute(antonymSearchUrl);
 
@@ -55,10 +57,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public class wordQueryTask extends AsyncTask<URL, Void, String[] >
+    public class wordQueryTask extends AsyncTask<URL, Void, List<String> >
     {
         @Override
-        protected String[] doInBackground(URL... urls)
+        protected List<String> doInBackground(URL... urls)
         {
             URL searchUrl = urls[0];
             synonymWord[] synonymResults;
@@ -66,13 +68,15 @@ public class MainActivity extends AppCompatActivity
             try
             {
                 synonymResults = fetchSynonym.getResponseFromUrl(searchUrl);
-                String[] resultsToPrint = new String[synonymResults.length+1];
-                resultsToPrint[0] = "\n\nSynonyms:";
+                //String[] resultsToPrint = new String[synonymResults.length+1];
+                //resultsToPrint[0] = "\n\nSynonyms:";
+                List<String> resultsToPrint = new ArrayList<String>();
+                resultsToPrint.add("\n\n");
 
                 int i=1;
                 for (synonymWord sr : synonymResults)
                 {
-                    resultsToPrint[i] = sr.getWord();
+                    resultsToPrint.add(sr.getWord());
                     i++;
                 }
                 return resultsToPrint;
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected void onPostExecute(String[] results)
+        protected void onPostExecute(List<String> results)
         {
             if(results!=null)
             {
