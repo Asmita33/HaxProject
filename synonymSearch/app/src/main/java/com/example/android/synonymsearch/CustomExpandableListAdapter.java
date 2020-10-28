@@ -63,7 +63,9 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return this.expandableListTitle.size();
+        if(expandableListTitle!=null)
+        {return this.expandableListTitle.size();}
+        else return 0;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     private ExpandableListView expandableResultsListView;
     private ExpandableListAdapter expandableListAdapter;
     List<String> expandableResultHeadings;
-    HashMap<String, String[]> expandableListDetail;
+    HashMap<String, List<String>> expandableListDetail;
 
     private Button speakButton;
     TextToSpeech tts;
@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity
         speakButton = (Button) findViewById((R.id.button_speak));
         expandableResultsListView = (ExpandableListView) findViewById(R.id.expandableListView);
 
-        populateMyList();
+        //populateMyList();
+
 
 
         doMultiAutoComplete();
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity
     // ----------->>> for Results of synonyms, antonyms, rhymes
     private void makeWordSearchQuery()
     {
-        expandableResultHeadings = new ArrayList<String>();
+    /*    expandableResultHeadings = new ArrayList<String>();
         expandableResultHeadings.add("Synonyms");
         expandableResultHeadings.add("Antonyms");
         expandableResultHeadings.add("Words with similar usages");
@@ -149,16 +150,32 @@ public class MainActivity extends AppCompatActivity
         expandableResultHeadings.add("Words that sound similar");
         expandableResultHeadings.add("Words triggered from this word");
 
-        expandableListDetail = new HashMap<String, String[]>();
+        expandableListDetail = new HashMap<String, List<String>>();  */
 
+        expandableResultHeadings = new ArrayList<String>();
+        expandableResultHeadings.add("Synonyms");
+        expandableListDetail = new HashMap<String, List<String>>();
         String wordQuery = SearchBoxMACTV.getText().toString();
 
         URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery); // for printing synonyms
         UrlDisplayTV.setText(synonymSearchUrl.toString());
-        new wordQueryTask().execute(synonymSearchUrl);
-        //String[] syns = getResultsFromAsync();
 
-        URL antonymSearchUrl = fetchAntonym.buildUrl(wordQuery); // for printing antonyms
+        new wordQueryTask(new asyncResponse() {
+            @Override
+            public void processFinish(ArrayList<String> output) {
+                List<String> syns = output;
+                expandableListDetail.put(expandableResultHeadings.get(0), syns);
+            }
+        }).execute(synonymSearchUrl);
+        expandableListAdapter = new CustomExpandableListAdapter(this,
+                expandableResultHeadings, expandableListDetail);
+        expandableResultsListView.setAdapter(expandableListAdapter);
+
+        //List<String> syns;
+        //setResultsFromAsync(syns, );
+
+
+     /*   URL antonymSearchUrl = fetchAntonym.buildUrl(wordQuery); // for printing antonyms
         UrlDisplayTV.append("\n" +antonymSearchUrl.toString());
         new wordQueryTask().execute(antonymSearchUrl);
 
@@ -176,30 +193,31 @@ public class MainActivity extends AppCompatActivity
 
         URL triggersUrl = fetchTriggers.buildUrl(wordQuery); // to print triggers
         UrlDisplayTV.append("\n" +triggersUrl.toString());
-        new wordQueryTask().execute(triggersUrl);
+        new wordQueryTask().execute(triggersUrl);  */
 
     }
 
-    public class wordQueryTask extends AsyncTask<URL, Void, String[] >
+    public class wordQueryTask extends AsyncTask<URL, Void, ArrayList<String> >
     {
+        public asyncResponse outputFromAsync = null;
+        public wordQueryTask(asyncResponse delegate){
+            this.outputFromAsync = delegate;
+        }
+
         @Override
-        protected String[] doInBackground(URL... urls)
+        protected ArrayList<String> doInBackground(URL... urls)
         {
             URL searchUrl = urls[0];
             synonymWord[] synonymResults;
-            //headingIndex++;
 
             try
             {
                 synonymResults = fetchSynonym.getResponseFromUrl(searchUrl);
-                String[] resultsToPrint = new String[synonymResults.length];
-                //resultsToPrint[0] = resultsHeading[headingIndex];
+                ArrayList<String> resultsToPrint = new ArrayList<String>();
 
-                int i=1;
                 for (synonymWord sr : synonymResults)
                 {
-                    resultsToPrint[i] = sr.getWord();
-                    i++;
+                    resultsToPrint.add(sr.getWord());
                 }
                 return resultsToPrint;
             }
@@ -208,17 +226,17 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected void onPostExecute(String[] results)
+        protected void onPostExecute(ArrayList<String> results)
         {
-            String[] res = new String[];
-            setResultsFromAsync(res, results);
+            //if(results!=null){
+            outputFromAsync.processFinish(results);   //}
         }
 
     }
 
-    private String[] setResultsFromAsync(String setTo, String[] results)
+    private void setResultsFromAsync(List<String> setTo, ArrayList<String> results)
     {
-        return results;
+        setTo = results;
     }
     // ----------->>> for Results of synonyms, antonyms, rhymes
 
