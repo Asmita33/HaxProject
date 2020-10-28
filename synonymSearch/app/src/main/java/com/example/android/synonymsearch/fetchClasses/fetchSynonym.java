@@ -40,23 +40,23 @@ public class fetchSynonym
 
     // return array of synonyms
     public static synonymWord[] getResponseFromUrl(URL url) throws IOException
+{
+    Gson gson = new GsonBuilder().create();
+    synonymWord[] synonyms=null;
+
+    try
     {
-        Gson gson = new GsonBuilder().create();
-        synonymWord[] synonyms=null;
+        URLConnection urlcon = url.openConnection();
+        BufferedReader br = new BufferedReader(new InputStreamReader(urlcon.getInputStream()));
 
-        try
-        {
-            URLConnection urlcon = url.openConnection();
-            BufferedReader br = new BufferedReader(new InputStreamReader(urlcon.getInputStream()));
+        synonyms = gson.fromJson(br,synonymWord[].class);
 
-            synonyms = gson.fromJson(br,synonymWord[].class);
+    } catch (IOException e) { e.printStackTrace(); }
+    catch (JsonSyntaxException e) { e.printStackTrace(); }
+    catch (JsonIOException e) { e.printStackTrace(); }
 
-        } catch (IOException e) { e.printStackTrace(); }
-        catch (JsonSyntaxException e) { e.printStackTrace(); }
-        catch (JsonIOException e) { e.printStackTrace(); }
-
-        return synonyms;
-    }
+    return synonyms;
+}
 
 
 }

@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
@@ -27,22 +29,22 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
 {
     private MultiAutoCompleteTextView SearchBoxMACTV;
     private TextView UrlDisplayTV;
-    private TextView SearchResultsTV;
+
+    private ExpandableListView expandableResultsListView;
+    private ExpandableListAdapter expandableListAdapter;
+    List<String> expandableResultHeadings;
+    HashMap<String, String[]> expandableListDetail;
+
     private Button speakButton;
     TextToSpeech tts;
-    String[] resultsHeading = {"\n\nSynonyms:", "\n\nAntonyms:",
-            "\n\nWords with similar usages:",
-            "\n\nRhymes:", "\n\nWords with similar sounds:",
-    "\n\nWords triggered from this word:"};
-    int headingIndex=-1;  // currently showing only 1 result, coz then arrayIndexOutOfBounds coz headingIndex >3 then.
-    // need a way to reset headingIndex to -1 after each search
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,11 +54,30 @@ public class MainActivity extends AppCompatActivity
 
         SearchBoxMACTV = (MultiAutoCompleteTextView) findViewById(R.id.MAC_TV_search_box);
         UrlDisplayTV = (TextView) findViewById(R.id.tv_url_display);
-        SearchResultsTV = (TextView) findViewById(R.id.tv_api_search_results);
         speakButton = (Button) findViewById((R.id.button_speak));
+        expandableResultsListView = (ExpandableListView) findViewById(R.id.expandableListView);
+
+        populateMyList();
+
 
         doMultiAutoComplete();
         speakResults();
+
+    }
+
+    private void populateMyList()
+    {
+    /*    expandableResultHeadings = new ArrayList<String>();
+        expandableResultHeadings.add("Synonyms");
+        expandableResultHeadings.add("Antonyms");
+        expandableResultHeadings.add("Words with similar usages");
+        expandableResultHeadings.add("Rhymes");
+        expandableResultHeadings.add("Words that sound similar");
+        expandableResultHeadings.add("Words triggered from this word");
+
+        expandableListDetail = new HashMap<String, String[]>(); */
+
+        //String[] syns = new wordQueryTask
 
     }
 
@@ -98,9 +119,9 @@ public class MainActivity extends AppCompatActivity
         speakButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String toSpeak = SearchResultsTV.getText().toString();
+                //String toSpeak = expandableResultsListView.getText().toString();
                 //Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-                tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                //tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
     }
@@ -120,11 +141,22 @@ public class MainActivity extends AppCompatActivity
     // ----------->>> for Results of synonyms, antonyms, rhymes
     private void makeWordSearchQuery()
     {
+        expandableResultHeadings = new ArrayList<String>();
+        expandableResultHeadings.add("Synonyms");
+        expandableResultHeadings.add("Antonyms");
+        expandableResultHeadings.add("Words with similar usages");
+        expandableResultHeadings.add("Rhymes");
+        expandableResultHeadings.add("Words that sound similar");
+        expandableResultHeadings.add("Words triggered from this word");
+
+        expandableListDetail = new HashMap<String, String[]>();
+
         String wordQuery = SearchBoxMACTV.getText().toString();
 
         URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery); // for printing synonyms
         UrlDisplayTV.setText(synonymSearchUrl.toString());
         new wordQueryTask().execute(synonymSearchUrl);
+        //String[] syns = getResultsFromAsync();
 
         URL antonymSearchUrl = fetchAntonym.buildUrl(wordQuery); // for printing antonyms
         UrlDisplayTV.append("\n" +antonymSearchUrl.toString());
@@ -155,13 +187,13 @@ public class MainActivity extends AppCompatActivity
         {
             URL searchUrl = urls[0];
             synonymWord[] synonymResults;
-            headingIndex++;
+            //headingIndex++;
 
             try
             {
                 synonymResults = fetchSynonym.getResponseFromUrl(searchUrl);
-                String[] resultsToPrint = new String[synonymResults.length+1];
-                resultsToPrint[0] = resultsHeading[headingIndex];
+                String[] resultsToPrint = new String[synonymResults.length];
+                //resultsToPrint[0] = resultsHeading[headingIndex];
 
                 int i=1;
                 for (synonymWord sr : synonymResults)
@@ -178,16 +210,15 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String[] results)
         {
-            if(results!=null)
-            {
-                for(String s : results)
-                {
-                    SearchResultsTV.append((s) + "\n\n");
-                }
-            }
-
+            String[] res = new String[];
+            setResultsFromAsync(res, results);
         }
 
+    }
+
+    private String[] setResultsFromAsync(String setTo, String[] results)
+    {
+        return results;
     }
     // ----------->>> for Results of synonyms, antonyms, rhymes
 

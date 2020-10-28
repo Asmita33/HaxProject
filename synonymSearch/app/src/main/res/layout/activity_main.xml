@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingTop="16dp"
-    android:paddingRight="16dp"
+    android:paddingLeft="6dp"
+    android:paddingTop="6dp"
+    android:paddingRight="6dp"
     tools:context="com.example.android.synonymsearch.MainActivity">
 
     <Button
@@ -32,16 +32,11 @@
         android:text="Click search and the URL will show up here!"
         android:textSize="12sp" />
 
-    <ScrollView
+    <ExpandableListView
+        android:id="@+id/expandableListView"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
-
-        <TextView
-            android:id="@+id/tv_api_search_results"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Search results will show up here"
-            android:textSize="20sp" />
-    </ScrollView>
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
 </LinearLayout>
