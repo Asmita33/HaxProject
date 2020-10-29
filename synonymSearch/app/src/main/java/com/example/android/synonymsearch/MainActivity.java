@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity
     // ----------->>> for Results of synonyms, antonyms, rhymes
     private void makeWordSearchQuery()
     {
-    /*    expandableResultHeadings = new ArrayList<String>();
+        expandableResultHeadings = new ArrayList<String>();  //creating list of headings
         expandableResultHeadings.add("Synonyms");
         expandableResultHeadings.add("Antonyms");
         expandableResultHeadings.add("Words with similar usages");
@@ -150,60 +150,80 @@ public class MainActivity extends AppCompatActivity
         expandableResultHeadings.add("Words that sound similar");
         expandableResultHeadings.add("Words triggered from this word");
 
-        expandableListDetail = new HashMap<String, List<String>>();  */
+        expandableListDetail = new HashMap<String, List<String>>();  // HashMap of headings to respective results
 
-        expandableResultHeadings = new ArrayList<String>();
-        expandableResultHeadings.add("Synonyms");
-        expandableListDetail = new HashMap<String, List<String>>();
+        expandableListAdapter = new CustomExpandableListAdapter(this,
+                expandableResultHeadings, expandableListDetail);  // initializing the adapter
+
         String wordQuery = SearchBoxMACTV.getText().toString();
 
-        URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery); // for printing synonyms
+        // for printing synonyms
+        URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery);
         UrlDisplayTV.setText(synonymSearchUrl.toString());
-
         new wordQueryTask(new asyncResponse() {
             @Override
             public void processFinish(ArrayList<String> output) {
-                List<String> syns = output;
-                if(syns!=null){
-                expandableListDetail.put(expandableResultHeadings.get(0), syns); }
+                expandableListDetail.put(expandableResultHeadings.get(0), output);
+                //expandableResultsListView.setAdapter(expandableListAdapter);
             }
         }).execute(synonymSearchUrl);
-        expandableListAdapter = new CustomExpandableListAdapter(this,
-                expandableResultHeadings, expandableListDetail);
-        expandableResultsListView.setAdapter(expandableListAdapter);
 
-        //List<String> syns;
-        //setResultsFromAsync(syns, );
-
-
-     /*   URL antonymSearchUrl = fetchAntonym.buildUrl(wordQuery); // for printing antonyms
+        // for printing antonyms
+        URL antonymSearchUrl = fetchAntonym.buildUrl(wordQuery);
         UrlDisplayTV.append("\n" +antonymSearchUrl.toString());
-        new wordQueryTask().execute(antonymSearchUrl);
+        new wordQueryTask(new asyncResponse() {
+            @Override
+            public void processFinish(ArrayList<String> output) {
+                expandableListDetail.put(expandableResultHeadings.get(1), output);
+            }
+        }).execute(antonymSearchUrl);
 
-        URL meansLikeUrl = fetchMeansLike.buildUrl(wordQuery); // for words with similar meanings
+        // for words with similar meanings
+        URL meansLikeUrl = fetchMeansLike.buildUrl(wordQuery);
         UrlDisplayTV.append("\n" +meansLikeUrl.toString());
-        new wordQueryTask().execute(meansLikeUrl);
+        new wordQueryTask(new asyncResponse() {
+            @Override
+            public void processFinish(ArrayList<String> output) {
+                expandableListDetail.put(expandableResultHeadings.get(2), output);
+            }
+        }).execute(meansLikeUrl);
 
-        URL rhymeSearchUrl = fetchRhyme.buildUrl(wordQuery); // for printing rhymes
+        // for printing rhymes
+        URL rhymeSearchUrl = fetchRhyme.buildUrl(wordQuery);
         UrlDisplayTV.append("\n" +rhymeSearchUrl.toString());
-        new wordQueryTask().execute(rhymeSearchUrl);
+        new wordQueryTask(new asyncResponse() {
+            @Override
+            public void processFinish(ArrayList<String> output) {
+                expandableListDetail.put(expandableResultHeadings.get(3), output);
+            }
+        }).execute(rhymeSearchUrl);
 
-        URL similarSoundUrl = fetchSimilarSounds.buildUrl(wordQuery); // for words with similar sounds
+        // for words with similar sounds
+        URL similarSoundUrl = fetchSimilarSounds.buildUrl(wordQuery);
         UrlDisplayTV.append("\n" +similarSoundUrl.toString());
-        new wordQueryTask().execute(similarSoundUrl);
+        new wordQueryTask(new asyncResponse() {
+            @Override
+            public void processFinish(ArrayList<String> output) {
+                expandableListDetail.put(expandableResultHeadings.get(4), output);
+            }
+        }).execute(similarSoundUrl);
 
-        URL triggersUrl = fetchTriggers.buildUrl(wordQuery); // to print triggers
+        // to print triggers
+        URL triggersUrl = fetchTriggers.buildUrl(wordQuery);
         UrlDisplayTV.append("\n" +triggersUrl.toString());
-        new wordQueryTask().execute(triggersUrl);  */
+        new wordQueryTask(new asyncResponse() {
+            @Override
+            public void processFinish(ArrayList<String> output) {
+                expandableListDetail.put(expandableResultHeadings.get(5), output);
+                expandableResultsListView.setAdapter(expandableListAdapter);
+            }
+        }).execute(triggersUrl);
 
     }
 
     public class wordQueryTask extends AsyncTask<URL, Void, ArrayList<String> >
     {
-        public asyncResponse outputFromAsync = null;
-        public wordQueryTask(asyncResponse delegate){
-            this.outputFromAsync = delegate;
-        }
+
 
         @Override
         protected ArrayList<String> doInBackground(URL... urls)
@@ -226,19 +246,18 @@ public class MainActivity extends AppCompatActivity
             
         }
 
+        public asyncResponse outputFromAsync = null;
+        public wordQueryTask(asyncResponse delegate){
+            this.outputFromAsync = delegate;
+        }
         @Override
         protected void onPostExecute(ArrayList<String> results)
         {
-            //if(results!=null){
-            outputFromAsync.processFinish(results);   //}
+            outputFromAsync.processFinish(results);
         }
 
     }
 
-    private void setResultsFromAsync(List<String> setTo, ArrayList<String> results)
-    {
-        setTo = results;
-    }
     // ----------->>> for Results of synonyms, antonyms, rhymes
 
     @Override
