@@ -10,27 +10,12 @@
     android:paddingRight="6dp"
     tools:context="com.example.android.synonymsearch.MainActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_speak"
-        android:text="speak"/>
-
     <MultiAutoCompleteTextView
         android:id="@+id/MAC_TV_search_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Type here..."
-         />
-
-    <TextView
-        android:id="@+id/tv_url_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Click search and the URL will show up here!"
-        android:textSize="12sp" />
+        android:hint="Type here..." />
 
     <ExpandableListView
         android:id="@+id/expandableListView"

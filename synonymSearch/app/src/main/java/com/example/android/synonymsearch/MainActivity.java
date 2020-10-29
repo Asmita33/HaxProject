@@ -36,14 +36,12 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity
 {
     private MultiAutoCompleteTextView SearchBoxMACTV;
-    private TextView UrlDisplayTV;
 
     private ExpandableListView expandableResultsListView;
     private ExpandableListAdapter expandableListAdapter;
     List<String> expandableResultHeadings;
     HashMap<String, List<String>> expandableListDetail;
 
-    private Button speakButton;
     TextToSpeech tts;
 
     @Override
@@ -53,33 +51,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         SearchBoxMACTV = (MultiAutoCompleteTextView) findViewById(R.id.MAC_TV_search_box);
-        UrlDisplayTV = (TextView) findViewById(R.id.tv_url_display);
-        speakButton = (Button) findViewById((R.id.button_speak));
         expandableResultsListView = (ExpandableListView) findViewById(R.id.expandableListView);
 
-        //populateMyList();
-
-
-
         doMultiAutoComplete();
-        speakResults();
-
-    }
-
-    private void populateMyList()
-    {
-    /*    expandableResultHeadings = new ArrayList<String>();
-        expandableResultHeadings.add("Synonyms");
-        expandableResultHeadings.add("Antonyms");
-        expandableResultHeadings.add("Words with similar usages");
-        expandableResultHeadings.add("Rhymes");
-        expandableResultHeadings.add("Words that sound similar");
-        expandableResultHeadings.add("Words triggered from this word");
-
-        expandableListDetail = new HashMap<String, String[]>(); */
-
-        //String[] syns = new wordQueryTask
-
     }
 
     public void doMultiAutoComplete()
@@ -105,7 +79,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    // ----------->>> for Text To Speech
+
+    // ----------->>> for Text To Speech, do not delete this implementation you used, until new one is done
+    /*
     public void speakResults()
     {
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -134,12 +110,12 @@ public class MainActivity extends AppCompatActivity
             tts.shutdown();
         }
         super.onPause();
-    }
+    } */
     // ----------->>> for Text To Speech
 
 
 
-    // ----------->>> for Results of synonyms, antonyms, rhymes
+    // ----------->>> for Results of synonyms, antonyms, rhymes etc
     private void makeWordSearchQuery()
     {
         expandableResultHeadings = new ArrayList<String>();  //creating list of headings
@@ -159,7 +135,6 @@ public class MainActivity extends AppCompatActivity
 
         // for printing synonyms
         URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery);
-        UrlDisplayTV.setText(synonymSearchUrl.toString());
         new wordQueryTask(new asyncResponse() {
             @Override
             public void processFinish(ArrayList<String> output) {
@@ -170,7 +145,6 @@ public class MainActivity extends AppCompatActivity
 
         // for printing antonyms
         URL antonymSearchUrl = fetchAntonym.buildUrl(wordQuery);
-        UrlDisplayTV.append("\n" +antonymSearchUrl.toString());
         new wordQueryTask(new asyncResponse() {
             @Override
             public void processFinish(ArrayList<String> output) {
@@ -180,7 +154,6 @@ public class MainActivity extends AppCompatActivity
 
         // for words with similar meanings
         URL meansLikeUrl = fetchMeansLike.buildUrl(wordQuery);
-        UrlDisplayTV.append("\n" +meansLikeUrl.toString());
         new wordQueryTask(new asyncResponse() {
             @Override
             public void processFinish(ArrayList<String> output) {
@@ -190,7 +163,6 @@ public class MainActivity extends AppCompatActivity
 
         // for printing rhymes
         URL rhymeSearchUrl = fetchRhyme.buildUrl(wordQuery);
-        UrlDisplayTV.append("\n" +rhymeSearchUrl.toString());
         new wordQueryTask(new asyncResponse() {
             @Override
             public void processFinish(ArrayList<String> output) {
@@ -200,7 +172,6 @@ public class MainActivity extends AppCompatActivity
 
         // for words with similar sounds
         URL similarSoundUrl = fetchSimilarSounds.buildUrl(wordQuery);
-        UrlDisplayTV.append("\n" +similarSoundUrl.toString());
         new wordQueryTask(new asyncResponse() {
             @Override
             public void processFinish(ArrayList<String> output) {
@@ -210,7 +181,7 @@ public class MainActivity extends AppCompatActivity
 
         // to print triggers
         URL triggersUrl = fetchTriggers.buildUrl(wordQuery);
-        UrlDisplayTV.append("\n" +triggersUrl.toString());
+
         new wordQueryTask(new asyncResponse() {
             @Override
             public void processFinish(ArrayList<String> output) {
