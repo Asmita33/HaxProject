@@ -1,7 +1,7 @@
 This branch currently has:
 
--> synonyms, antonyms, rhymes in search results
-
--> basic text to speech functionality, just reads the results.
+-> synonyms, antonyms, similar meanings, rhymes, sounds, triggers  in search results
 
 -> auto Complete for each word while typing.
+
+-> expandable ListView for all results
