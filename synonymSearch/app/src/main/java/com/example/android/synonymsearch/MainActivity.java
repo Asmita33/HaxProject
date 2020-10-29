@@ -79,42 +79,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-    // ----------->>> for Text To Speech, do not delete this implementation you used, until new one is done
-
-  /*  public void speakResults()
-    {
-        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                if(i!=TextToSpeech.ERROR){
-                    tts.setLanguage(Locale.UK);
-                }
-            }
-        });
-
-        speakButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //String toSpeak = expandableResultsListView.getText().toString();
-                //Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-                //tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
-            }
-        });
-    }*/
-    public void onPause()
-    {
-        if(tts!=null)
-        {
-            tts.stop();
-            tts.shutdown();
-        }
-        super.onPause();
-    }
-    // ----------->>> for Text To Speech
-
-
-
     // ----------->>> for Results of synonyms, antonyms, rhymes etc
     private void makeWordSearchQuery()
     {
@@ -209,13 +173,20 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onGroupExpand(int position)
             {
-                //String toSpeak = expandableResultsListView.getText().toString();
-                //Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-                //tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
                 String toSpeak = expandableResultHeadings.get(position);
                 tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+            }
+        });
 
-
+        expandableResultsListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent,
+                                        View view, int groupPos, int childPos, long id)
+            {
+                String toSpeak = expandableListDetail
+                        .get(expandableResultHeadings.get(groupPos)).get(childPos);
+                tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                return false;
             }
         });
 
