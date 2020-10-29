@@ -164,7 +164,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void processFinish(ArrayList<String> output) {
                 List<String> syns = output;
-                expandableListDetail.put(expandableResultHeadings.get(0), syns);
+                if(syns!=null){
+                expandableListDetail.put(expandableResultHeadings.get(0), syns); }
             }
         }).execute(synonymSearchUrl);
         expandableListAdapter = new CustomExpandableListAdapter(this,
