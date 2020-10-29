@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity
 
 
     // ----------->>> for Text To Speech, do not delete this implementation you used, until new one is done
-    /*
-    public void speakResults()
+
+  /*  public void speakResults()
     {
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity
                 //tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
-    }
+    }*/
     public void onPause()
     {
         if(tts!=null)
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
             tts.shutdown();
         }
         super.onPause();
-    } */
+    }
     // ----------->>> for Text To Speech
 
 
@@ -190,12 +190,41 @@ public class MainActivity extends AppCompatActivity
             }
         }).execute(triggersUrl);
 
+        TTSListeners();
+
     }
+
+    public void TTSListeners()
+    {
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if(i!=TextToSpeech.ERROR){
+                    tts.setLanguage(Locale.UK);
+                }
+            }
+        });
+
+        expandableResultsListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int position)
+            {
+                //String toSpeak = expandableResultsListView.getText().toString();
+                //Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+                //tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                String toSpeak = expandableResultHeadings.get(position);
+                tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+
+
+            }
+        });
+
+    }
+
+
 
     public class wordQueryTask extends AsyncTask<URL, Void, ArrayList<String> >
     {
-
-
         @Override
         protected ArrayList<String> doInBackground(URL... urls)
         {
