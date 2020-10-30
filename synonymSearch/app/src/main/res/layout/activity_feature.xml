@@ -13,39 +13,29 @@
     tools:context="com.example.android.synonymsearch.MainActivity">
 
 
-    <MultiAutoCompleteTextView
-        android:id="@+id/MAC_TV_search_box"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="@font/architects_daughter"
-        android:hint="Type here..." />
+        android:id="@+id/meaningsTV"
+        android:hint="meanings"
+        android:textSize="16sp"/>
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
+
+
+
+    <ExpandableListView
+        android:id="@+id/expandableListView"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="463dp"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
-
-    <Button
-        android:id="@+id/history"
-        android:layout_width="128dp"
-        android:layout_height="34dp"
-        android:layout_marginLeft="250sp"
-        android:text="History"
-        android:fontFamily="@font/architects_daughter"
-        android:layout_marginBottom="5sp"
-        android:layout_marginTop="5sp"/>
-
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" >
+    </ExpandableListView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-
         android:id="@+id/floatingActionButton"
-        android:layout_width="45dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="300dp"
         android:clickable="true"
         app:srcCompat="@android:drawable/btn_star_big_on" />
 

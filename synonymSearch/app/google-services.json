@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "547016164277",
+    "firebase_url": "https://hax-project.firebaseio.com",
+    "project_id": "hax-project",
+    "storage_bucket": "hax-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547016164277:android:a7e07ccbbecd170f5d8ffc",
+        "android_client_info": {
+          "package_name": "com.example.android.synonymsearch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547016164277-2fgisrd9rtkprv9k423urfv7klfg8efn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.synonymsearch",
+            "certificate_hash": "98501dfcc73bb390927ccc64cf58ec8ec79f01f3"
+          }
+        },
+        {
+          "client_id": "547016164277-f365ajgg1br7ekbh2lkn2jegv8l5u15t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU3kBhSOigA0jXFWUNG6YLSpa1LnRKoVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547016164277-f365ajgg1br7ekbh2lkn2jegv8l5u15t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
