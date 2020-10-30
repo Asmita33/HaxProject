@@ -16,18 +16,24 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android.synonymsearch.fetchClasses.fetchAntonym;
+import com.example.android.synonymsearch.fetchClasses.fetchMeaning;
 import com.example.android.synonymsearch.fetchClasses.fetchRhyme;
 import com.example.android.synonymsearch.fetchClasses.fetchSynonym;
 import com.example.android.synonymsearch.fetchClasses.synonymWord;
 import com.example.android.synonymsearch.fetchClasses.fetchMeansLike;
 import com.example.android.synonymsearch.fetchClasses.fetchSimilarSounds;
 import com.example.android.synonymsearch.fetchClasses.fetchTriggers;
+import com.example.android.synonymsearch.fetchClasses.wordMeaning;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +42,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity
 {
     private MultiAutoCompleteTextView SearchBoxMACTV;
+    private TextView meaningTV;
 
     private ExpandableListView expandableResultsListView;
     private ExpandableListAdapter expandableListAdapter;
@@ -52,6 +59,7 @@ public class MainActivity extends AppCompatActivity
 
         SearchBoxMACTV = (MultiAutoCompleteTextView) findViewById(R.id.MAC_TV_search_box);
         expandableResultsListView = (ExpandableListView) findViewById(R.id.expandableListView);
+        meaningTV = (TextView) findViewById(R.id.meaningsTV);
 
         doMultiAutoComplete();
     }
@@ -96,6 +104,10 @@ public class MainActivity extends AppCompatActivity
                 expandableResultHeadings, expandableListDetail);  // initializing the adapter
 
         String wordQuery = SearchBoxMACTV.getText().toString();
+
+        //for printing meanings and examples
+        URL meaningSearchUrl = fetchMeaning.buildUrl("en", wordQuery);
+        new meaningQueryTask().execute(meaningSearchUrl);
 
         // for printing synonyms
         URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery);
@@ -230,6 +242,55 @@ public class MainActivity extends AppCompatActivity
     }
 
     // ----------->>> for Results of synonyms, antonyms, rhymes
+    public class meaningQueryTask extends AsyncTask<URL, Void, ArrayList<String> >
+    {
+
+        @Override
+        protected ArrayList<String> doInBackground(URL... urls)
+        {
+            URL searchUrl = urls[0];
+            ArrayList<String> resultsToPrint = new ArrayList<String>();
+
+            Gson gson = new GsonBuilder().create();
+            try {
+                URL url = new URL(searchUrl.toString());
+                URLConnection urlcon = url.openConnection();
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlcon.getInputStream()));
+
+                wordMeaning[] response = gson.fromJson(br, wordMeaning[].class);
+                wordMeaning.Meanings[] means = response[0].meanings;
+                for(wordMeaning.Meanings mean : means)
+                {
+                    resultsToPrint.add("\n" +"Part of Speech: " +mean.partOfSpeech);
+                    //resultsToPrint.add("\n");
+                    wordMeaning.Meanings.Defs[] definitions = mean.definitions;
+                    for(wordMeaning.Meanings.Defs def : definitions)
+                    {
+                        resultsToPrint.add("Meaning: " +def.definition);
+                        if(def.example!=null) {resultsToPrint.add("Example: " +def.example); }
+                        //resultsToPrint.add("\n");
+                    }
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return resultsToPrint;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> results)
+        {
+            for(String res : results)
+            {
+                meaningTV.append(res +"\n");
+
+            }
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

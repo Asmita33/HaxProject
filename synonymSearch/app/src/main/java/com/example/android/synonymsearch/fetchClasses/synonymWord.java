@@ -3,11 +3,11 @@ package com.example.android.synonymsearch.fetchClasses;
 public class synonymWord
 {
     String word;
-    int score;
+    //int score;
 
     public String getWord() {
         return word;
     }
 
-    public int getScore() { return score; }
+    //public int getScore() { return score; }
 }

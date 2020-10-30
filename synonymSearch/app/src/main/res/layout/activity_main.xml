@@ -16,6 +16,12 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Type here..." />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/meaningsTV"
+        android:hint="meanings"
+        android:textSize="16sp"/>
 
     <ExpandableListView
         android:id="@+id/expandableListView"
