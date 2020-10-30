@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity
             wordIntent w=new wordIntent(wordQuery);
             i.putExtra("mykey", w);
             startActivity(i);
-            //finish();
+
 
             return true;
         }

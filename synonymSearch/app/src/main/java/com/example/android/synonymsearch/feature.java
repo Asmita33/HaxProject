@@ -2,11 +2,15 @@ package com.example.android.synonymsearch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -60,6 +64,17 @@ public class feature extends AppCompatActivity {
 
 
         makeWordSearchQuery();
+
+
+        expandableResultsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ClipboardManager clipboard=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip=ClipData.newPlainText("", expandableResultHeadings.get(i));
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(feature.this,"Copied to clipboard",Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
@@ -178,11 +193,28 @@ public class feature extends AppCompatActivity {
             {
                 String toSpeak = expandableListDetail
                         .get(expandableResultHeadings.get(groupPos)).get(childPos);
-                tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+               // tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+
+                ClipboardManager clipboard=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip=ClipData.newPlainText("", expandableResultHeadings.get(childPos));
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(feature.this,"Copied to clipboard",Toast.LENGTH_SHORT).show();
+                Intent i=new Intent(feature.this,selectedword.class);
+
+                expandableResultsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent=new Intent(feature.this,selectedword.class);
+                        startActivity(intent);
+
+                        return false;
+                    }
+                });
 
                 return false;
             }
         });
+
 
     }
 
