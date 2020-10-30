@@ -1,5 +1,6 @@
 package com.example.android.synonymsearch;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -12,6 +13,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +24,8 @@ import com.example.android.synonymsearch.fetchClasses.synonymWord;
 import com.example.android.synonymsearch.fetchClasses.fetchMeansLike;
 import com.example.android.synonymsearch.fetchClasses.fetchSimilarSounds;
 import com.example.android.synonymsearch.fetchClasses.fetchTriggers;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,18 +45,31 @@ public class MainActivity extends AppCompatActivity
     private ExpandableListAdapter expandableListAdapter;
     List<String> expandableResultHeadings;
     HashMap<String, List<String>> expandableListDetail;
+    FirebaseDatabase rootnode ;
+    DatabaseReference reference;
 
     TextToSpeech tts;
+    Button history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        history=findViewById(R.id.history);
         SearchBoxMACTV = (MultiAutoCompleteTextView) findViewById(R.id.MAC_TV_search_box);
         expandableResultsListView = (ExpandableListView) findViewById(R.id.expandableListView);
 
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i=new Intent(MainActivity.this,history.class);
+                startActivity(i);
+                finish();
+
+            }
+        });
         doMultiAutoComplete();
     }
 
@@ -132,6 +149,18 @@ public class MainActivity extends AppCompatActivity
                 expandableResultHeadings, expandableListDetail);  // initializing the adapter
 
         String wordQuery = SearchBoxMACTV.getText().toString();
+
+
+        rootnode = FirebaseDatabase.getInstance();
+
+        reference=rootnode.getReference().child("Search History");
+
+
+        reference.push().setValue(wordQuery);
+
+
+
+        Toast.makeText(MainActivity.this,"Data inserted successfully",Toast.LENGTH_LONG).show();
 
         // for printing synonyms
         URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery);
