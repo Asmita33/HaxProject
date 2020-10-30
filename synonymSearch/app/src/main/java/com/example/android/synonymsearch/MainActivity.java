@@ -27,6 +27,7 @@ import com.example.android.synonymsearch.fetchClasses.fetchSimilarSounds;
 import com.example.android.synonymsearch.fetchClasses.fetchTriggers;
 
 import com.example.android.synonymsearch.fetchClasses.wordMeaning;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,13 +50,17 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity
 {
     private MultiAutoCompleteTextView SearchBoxMACTV;
+    private FloatingActionButton fabMain;
+    boolean isRotate = false;
+    private FloatingActionButton fabSpeak;
+    private FloatingActionButton fabHistory;
 
     FirebaseDatabase rootnode ;
     DatabaseReference reference;
 
-
     Button history;
     String wordQuery;
+    TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -64,26 +69,58 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         history=findViewById(R.id.history);
         SearchBoxMACTV = (MultiAutoCompleteTextView) findViewById(R.id.MAC_TV_search_box);
+        fabMain = (FloatingActionButton) findViewById(R.id.fab_main);
+        fabSpeak = (FloatingActionButton) findViewById(R.id.fabSpeak);
+        fabHistory = (FloatingActionButton) findViewById(R.id.fabHistory) ;
 
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if(i!=TextToSpeech.ERROR){
+                    tts.setLanguage(Locale.UK);
+                }
+            }
+        });
 
+        fabMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isRotate = ViewAnimation.rotateFab(view, !isRotate);
+                if(isRotate){
+                    ViewAnimation.showIn(fabSpeak);
+                    ViewAnimation.showIn(fabHistory);
+                }else{
+                    ViewAnimation.showOut(fabSpeak);
+                    ViewAnimation.showOut(fabHistory);
+                }
+            }
+        });
+        fabSpeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String toSpeak = SearchBoxMACTV.getText().toString();
+                tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                isRotate = ViewAnimation.rotateFab(view, !isRotate);
+            }
+        });
 
+        fabHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isRotate = ViewAnimation.rotateFab(view, !isRotate);
+                Intent i=new Intent(MainActivity.this,history.class);
+                startActivity(i);
+            }
+        });
 
-
-
-
-
-
-        history.setOnClickListener(new View.OnClickListener() {
+    /*    history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent i=new Intent(MainActivity.this,history.class);
                 startActivity(i);
-
-
             }
-        });
-
+        }); */
 
 
         doMultiAutoComplete();

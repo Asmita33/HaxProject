@@ -21,6 +21,7 @@ import com.example.android.synonymsearch.fetchClasses.fetchSynonym;
 import com.example.android.synonymsearch.fetchClasses.fetchTriggers;
 import com.example.android.synonymsearch.fetchClasses.synonymWord;
 import com.example.android.synonymsearch.fetchClasses.wordMeaning;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -40,6 +41,8 @@ public class feature extends AppCompatActivity {
     private TextView meaningTV;
     String wordQuery;
     TextToSpeech tts;
+    private FloatingActionButton fab;
+    boolean isRotate = false;
 
     private ExpandableListView expandableResultsListView;
     private ExpandableListAdapter expandableListAdapter;
@@ -57,7 +60,25 @@ public class feature extends AppCompatActivity {
         expandableResultsListView = (ExpandableListView) findViewById(R.id.expandableListView);
         meaningTV = (TextView) findViewById(R.id.meaningsTV);
 
+        fab = (FloatingActionButton) findViewById(R.id.fab_feature);
 
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if(i!=TextToSpeech.ERROR){
+                    tts.setLanguage(Locale.UK);
+                }
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String toSpeak = meaningTV.getText().toString();
+                tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                isRotate = ViewAnimation.rotateFab(view, !isRotate);
+            }
+        });
 
         makeWordSearchQuery();
 
@@ -81,14 +102,9 @@ public class feature extends AppCompatActivity {
 
         //  String wordQuery = SearchBoxMACTV.getText().toString();
 
-
         //for printing meanings and examples
         URL meaningSearchUrl = fetchMeaning.buildUrl("en", wordQuery);
         new meaningQueryTask().execute(meaningSearchUrl);
-
-
-
-
 
         // for printing synonyms
         URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery);
