@@ -24,7 +24,7 @@
     <EditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
-        android:layout_height="463dp"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName" />
 
@@ -42,12 +42,41 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
 
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/fab_main"
         android:layout_width="45dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="300dp"
         android:clickable="true"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="18dp"
+        app:srcCompat="@android:drawable/btn_star_big_on"
+        app:fabSize="normal"
+        app:rippleColor="#ffffff"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSpeak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="18dp"
+        app:srcCompat="@android:drawable/ic_btn_speak_now"
+        android:tint="#bd8e8e"
+        app:backgroundTint="#42c0eb"
+        app:fabSize="mini"
+        app:rippleColor="#ffffff" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="18dp"
+
+        app:srcCompat="@android:drawable/presence_video_busy"
+        android:tint="#bd8e8e"
+        app:backgroundTint="#42c0eb"
+        app:fabSize="mini"
+        app:rippleColor="#ffffff" />
 
 
 </LinearLayout>

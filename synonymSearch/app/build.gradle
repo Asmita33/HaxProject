@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 
 
-    implementation 'com.android.support:design:30.0.0-alpha3'
+    implementation 'com.android.support:design:29.0.0-alpha3'
 }
 
 
