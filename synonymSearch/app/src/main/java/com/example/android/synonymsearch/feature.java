@@ -26,6 +26,8 @@ import com.example.android.synonymsearch.fetchClasses.fetchTriggers;
 import com.example.android.synonymsearch.fetchClasses.synonymWord;
 import com.example.android.synonymsearch.fetchClasses.wordMeaning;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -48,6 +50,8 @@ public class feature extends AppCompatActivity {
     private FloatingActionButton fab;
     boolean isRotate = false;
     String language;
+    FirebaseDatabase rootnode ,rootnodeS;
+    DatabaseReference reference,referenceS;
 
     private ExpandableListView expandableResultsListView;
     private ExpandableListAdapter expandableListAdapter;
@@ -210,30 +214,46 @@ public class feature extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent,
                                         View view, int groupPos, int childPos, long id)
             {
-                String toSpeak = expandableListDetail
-                        .get(expandableResultHeadings.get(groupPos)).get(childPos);
+              //  String toSpeak = expandableListDetail
+              //          .get(expandableResultHeadings.get(groupPos)).get(childPos);
                // tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
 
                 ClipboardManager clipboard=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip=ClipData.newPlainText("", expandableResultHeadings.get(childPos));
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(feature.this,"Copied to clipboard",Toast.LENGTH_SHORT).show();
-                Intent i=new Intent(feature.this,selectedword.class);
+              //  Intent i=new Intent(feature.this,selectedword.class);
+                final String tointent = expandableListDetail
+                        .get(expandableResultHeadings.get(groupPos)).get(childPos);
 
+
+                expandableResultsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        // Intent intent=new Intent(feature.this,selectedword.class);
+                        // startActivity(intent);
+
+                        Intent intent=new Intent(getApplicationContext(),feature.class);
+                        wordIntent w=new wordIntent(tointent);
+                        rootnode = FirebaseDatabase.getInstance();
+                        reference=rootnode.getReference().child("Search History");
+                        reference.push().setValue(tointent);
+
+                        Toast.makeText(feature.this,"Data inserted successfully",Toast.LENGTH_LONG).show();
+                        intent.putExtra("mykey", w);
+                        langIntent li = new langIntent(language);
+                        intent.putExtra("langKey", li);
+                        startActivity(intent);
+                        finish();
+                        return false;
+                    }
+                });
 
 
                 return false;
             }
         });
-        expandableResultsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(feature.this,selectedword.class);
-                startActivity(intent);
 
-                return false;
-            }
-        });
 
 
     }
