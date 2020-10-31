@@ -47,6 +47,7 @@ public class feature extends AppCompatActivity {
     private TextView meaningTV;
     String wordQuery;
     TextToSpeech tts;
+    TextToSpeech tts2;
     private FloatingActionButton fab;
     boolean isRotate = false;
     String language;
@@ -202,11 +203,11 @@ public class feature extends AppCompatActivity {
 
     public void TTSListeners()
     {
-        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+        tts2 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
                 if(i!=TextToSpeech.ERROR){
-                    tts.setLanguage(Locale.UK);
+                    tts2.setLanguage(Locale.UK);
                 }
             }
         });
@@ -232,7 +233,7 @@ public class feature extends AppCompatActivity {
 
                 String toSpeak = expandableListDetail
                         .get(expandableResultHeadings.get(groupPos)).get(childPos);
-                tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                tts2.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
 
 
                 ClipboardManager clipboard=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
