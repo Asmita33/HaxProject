@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,45 +13,39 @@
     tools:context="com.example.android.synonymsearch.MainActivity">
 
 
-    <MultiAutoCompleteTextView
-        android:id="@+id/MAC_TV_search_box"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="@font/architects_daughter"
-        android:hint="Type here..." />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName" />
+        android:layout_height="314dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
-    <Button
-        android:id="@+id/history"
-        android:layout_width="128dp"
-        android:layout_height="34dp"
-        android:layout_marginLeft="250sp"
-        android:text="History"
-        android:fontFamily="@font/architects_daughter"
-        android:layout_marginBottom="5sp"
-        android:layout_marginTop="5sp"/>
+        <MultiAutoCompleteTextView
+            android:id="@+id/MAC_TV_search_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="@font/alegreya"
+            android:hint="Search here...." />
+
+        <MultiAutoCompleteTextView
+            android:id="@+id/MAC_TV_notes"
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+
+            android:fontFamily="@font/alegreya"
+            android:hint="Make Note" />
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    </LinearLayout>
 
-        android:id="@+id/fab_main"
-        android:layout_width="45dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="300dp"
-        android:clickable="true"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="18dp"
-        app:srcCompat="@android:drawable/btn_star_big_on"
-        app:fabSize="normal"
-        app:rippleColor="#ffffff"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSpeak"
         android:layout_width="wrap_content"
@@ -59,11 +53,18 @@
         android:layout_centerInParent="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="18dp"
-        app:srcCompat="@android:drawable/ic_btn_speak_now"
-        android:tint="#bd8e8e"
-        app:backgroundTint="#42c0eb"
+
+        android:tint="@color/common_google_signin_btn_text_dark_default"
+        app:backgroundTint="@color/purple"
         app:fabSize="mini"
-        app:rippleColor="#ffffff" />
+        app:layout_constraintBottom_toTopOf="@+id/fabnote"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.888"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:rippleColor="#ffffff"
+        app:srcCompat="@android:drawable/ic_btn_speak_now" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabHistory"
@@ -72,11 +73,84 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="18dp"
 
-        app:srcCompat="@android:drawable/presence_video_busy"
-        android:tint="#bd8e8e"
-        app:backgroundTint="#42c0eb"
+        android:layout_marginBottom="16dp"
+        android:tint="@color/common_google_signin_btn_text_dark_default"
+        app:backgroundTint="@color/purple"
         app:fabSize="mini"
-        app:rippleColor="#ffffff" />
+        app:layout_constraintBottom_toTopOf="@+id/fab_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.896"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="#ffffff"
+        app:srcCompat="@android:drawable/ic_menu_recent_history" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabnote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="18dp"
+        android:layout_marginBottom="16dp"
+        android:tint="@color/common_google_signin_btn_text_dark_default"
+        app:backgroundTint="@color/purple"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/fabHistory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:rippleColor="#ffffff"
+        app:srcCompat="@android:drawable/ic_menu_save" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+        android:id="@+id/fab_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.869"
+        app:rippleColor="#ffffff"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@color/purple"
+        android:fontFamily="@font/alegreya"
+        android:text="Save"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.609"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.52" />
+
+    <Button
+        android:id="@+id/clear"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@color/purple"
+        android:fontFamily="@font/alegreya"
+        android:text="All Clear"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.981"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.52" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

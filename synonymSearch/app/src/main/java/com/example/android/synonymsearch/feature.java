@@ -217,15 +217,16 @@ public class feature extends AppCompatActivity {
                 Toast.makeText(feature.this,"Copied to clipboard",Toast.LENGTH_SHORT).show();
                 Intent i=new Intent(feature.this,selectedword.class);
 
-                expandableResultsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent=new Intent(feature.this,selectedword.class);
-                        startActivity(intent);
 
-                        return false;
-                    }
-                });
+
+                return false;
+            }
+        });
+        expandableResultsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent=new Intent(feature.this,selectedword.class);
+                startActivity(intent);
 
                 return false;
             }

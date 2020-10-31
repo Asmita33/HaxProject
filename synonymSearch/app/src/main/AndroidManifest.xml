@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".selectedword"></activity>
+        <activity android:name=".notes"></activity>
+        <activity android:name=".selectedword" />
         <activity android:name=".feature" />
         <activity android:name=".history" />
         <activity android:name=".MainActivity">

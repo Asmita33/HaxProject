@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.MultiAutoCompleteTextView;
@@ -49,29 +50,56 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
 {
-    private MultiAutoCompleteTextView SearchBoxMACTV;
+    private MultiAutoCompleteTextView SearchBoxMACTV,MakeNotes;
     private FloatingActionButton fabMain;
     boolean isRotate = false;
     private FloatingActionButton fabSpeak;
     private FloatingActionButton fabHistory;
+    private FloatingActionButton fabNote;
+    FirebaseDatabase rootnode ,rootnodeS;
+    DatabaseReference reference,referenceS;
 
-    FirebaseDatabase rootnode ;
-    DatabaseReference reference;
-
-    Button history;
+    Button save,clear;
     String wordQuery;
     TextToSpeech tts;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        history=findViewById(R.id.history);
+
         SearchBoxMACTV = (MultiAutoCompleteTextView) findViewById(R.id.MAC_TV_search_box);
+        MakeNotes=findViewById(R.id.MAC_TV_notes);
         fabMain = (FloatingActionButton) findViewById(R.id.fab_main);
         fabSpeak = (FloatingActionButton) findViewById(R.id.fabSpeak);
         fabHistory = (FloatingActionButton) findViewById(R.id.fabHistory) ;
+        fabNote = (FloatingActionButton) findViewById(R.id.fabnote) ;
+        save=findViewById(R.id.save);
+        clear=findViewById(R.id.clear);
+
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MakeNotes.setText("");
+            }
+        });
+
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String note=MakeNotes.getText().toString();
+                rootnodeS = FirebaseDatabase.getInstance();
+                referenceS=rootnodeS.getReference().child("Notes");
+                referenceS.push().setValue(note);
+                Toast.makeText(MainActivity.this,"Note Saved!!!!",Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
 
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -87,11 +115,13 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 isRotate = ViewAnimation.rotateFab(view, !isRotate);
                 if(isRotate){
-                    ViewAnimation.showIn(fabSpeak);
-                    ViewAnimation.showIn(fabHistory);
-                }else{
                     ViewAnimation.showOut(fabSpeak);
                     ViewAnimation.showOut(fabHistory);
+                    ViewAnimation.showOut(fabNote);
+                }else{
+                    ViewAnimation.showIn(fabSpeak);
+                    ViewAnimation.showIn(fabHistory);
+                    ViewAnimation.showIn(fabNote);
                 }
             }
         });
@@ -109,6 +139,14 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 isRotate = ViewAnimation.rotateFab(view, !isRotate);
                 Intent i=new Intent(MainActivity.this,history.class);
+                startActivity(i);
+            }
+        });
+        fabNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isRotate = ViewAnimation.rotateFab(view, !isRotate);
+                Intent i=new Intent(MainActivity.this,notes.class);
                 startActivity(i);
             }
         });
@@ -165,6 +203,7 @@ public class MainActivity extends AppCompatActivity
             rootnode = FirebaseDatabase.getInstance();
             reference=rootnode.getReference().child("Search History");
             reference.push().setValue(wordQuery);
+
             Toast.makeText(MainActivity.this,"Data inserted successfully",Toast.LENGTH_LONG).show();
             wordQuery = SearchBoxMACTV.getText().toString();
             Intent i=new Intent(getApplicationContext(),feature.class);
@@ -175,6 +214,8 @@ public class MainActivity extends AppCompatActivity
 
             return true;
         }
+
+
         return super.onOptionsItemSelected(item);
     }
 

@@ -6,4 +6,4 @@
     android:layout_height="fill_parent"
     android:padding="10dp"
     android:textSize="16dp"
-    app:fontFamily="@font/architects_daughter" />
+    app:fontFamily="@font/alegreya" />

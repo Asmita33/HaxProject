@@ -16,26 +16,40 @@
         android:id="@+id/fab_feature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="18dp"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        android:clickable="true"
+        android:tint="@color/common_google_signin_btn_text_dark_default"
+        app:srcCompat="@android:drawable/ic_btn_speak_now" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
 
     <TextView
+        android:id="@+id/meaningsTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/meaningsTV"
         android:hint="meanings"
+        android:textColor="#000000"
         android:textSize="16sp"
-        android:textColor="#000000"/>
+        app:fontFamily="@font/alegreya" />
 
-    <ExpandableListView
-        android:id="@+id/expandableListView"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" >
-    </ExpandableListView>
-
+            <ExpandableListView
+                android:id="@+id/expandableListView"
+                android:layout_width="match_parent"
+                android:layout_height="610dp"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="1dp"
+                android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft">
+                
+            </ExpandableListView>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

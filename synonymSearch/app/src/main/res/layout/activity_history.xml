@@ -17,7 +17,7 @@
                 android:layout_height="wrap_content"
                 android:text="Search History"
                 android:textSize="30sp"
-                app:fontFamily="@font/architects_daughter" />
+                app:fontFamily="@font/alegreya" />
 
         <ScrollView
         android:layout_width="match_parent"
