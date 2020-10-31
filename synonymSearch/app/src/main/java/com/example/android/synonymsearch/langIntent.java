@@ -2,10 +2,11 @@ package com.example.android.synonymsearch;
 
 import java.io.Serializable;
 
-public class wordIntent implements Serializable {
-
+public class langIntent implements Serializable
+{
     String word;
-    public wordIntent(String word) {
+    public langIntent(String word) {
         this.word = word;
     }
+
 }

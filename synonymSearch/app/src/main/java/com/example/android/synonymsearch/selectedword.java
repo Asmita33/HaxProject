@@ -15,7 +15,5 @@ public class selectedword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selectedword);
 
-
-
     }
 }

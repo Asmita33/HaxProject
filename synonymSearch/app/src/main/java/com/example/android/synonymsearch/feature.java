@@ -47,6 +47,7 @@ public class feature extends AppCompatActivity {
     TextToSpeech tts;
     private FloatingActionButton fab;
     boolean isRotate = false;
+    String language;
 
     private ExpandableListView expandableResultsListView;
     private ExpandableListAdapter expandableListAdapter;
@@ -59,6 +60,9 @@ public class feature extends AppCompatActivity {
 
         wordIntent w= (wordIntent) getIntent().getSerializableExtra("mykey");
         wordQuery=w.word;
+
+        langIntent l = (langIntent) getIntent().getSerializableExtra("langKey");
+        language = l.word;
 
 
         expandableResultsListView = (ExpandableListView) findViewById(R.id.expandableListView);
@@ -118,18 +122,17 @@ public class feature extends AppCompatActivity {
         //  String wordQuery = SearchBoxMACTV.getText().toString();
 
         //for printing meanings and examples
-        URL meaningSearchUrl = fetchMeaning.buildUrl("en", wordQuery);
+        URL meaningSearchUrl = fetchMeaning.buildUrl(language, wordQuery);
         new meaningQueryTask().execute(meaningSearchUrl);
 
         // for printing synonyms
-        URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery);
+    /*    URL synonymSearchUrl = fetchSynonym.buildUrl(wordQuery);
         new wordQueryTask(new asyncResponse() {
             @Override
             public void processFinish(ArrayList<String> output) {
-                expandableListDetail.put(expandableResultHeadings.get(0), output);
                 //expandableResultsListView.setAdapter(expandableListAdapter);
             }
-        }).execute(synonymSearchUrl);
+        }).execute(synonymSearchUrl); */
 
         // for printing antonyms
         URL antonymSearchUrl = fetchAntonym.buildUrl(wordQuery);
@@ -281,6 +284,7 @@ public class feature extends AppCompatActivity {
         {
             URL searchUrl = urls[0];
             ArrayList<String> resultsToPrint = new ArrayList<String>();
+            ArrayList<String> synons = new ArrayList<String>();
 
             Gson gson = new GsonBuilder().create();
             try {
@@ -289,6 +293,7 @@ public class feature extends AppCompatActivity {
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlcon.getInputStream()));
 
                 wordMeaning[] response = gson.fromJson(br, wordMeaning[].class);
+                resultsToPrint.add("Word: " +response[0].word);
                 wordMeaning.Meanings[] means = response[0].meanings;
                 for(wordMeaning.Meanings mean : means)
                 {
@@ -299,9 +304,15 @@ public class feature extends AppCompatActivity {
                     {
                         resultsToPrint.add("Meaning: " +def.definition);
                         if(def.example!=null) {resultsToPrint.add("Example: " +def.example); }
-                        //resultsToPrint.add("\n");
+                        if(def.synonyms!=null){
+                            String[] synonyms = def.synonyms;
+                            for(String syn : synonyms){
+                                synons.add(syn);
+                            } }
                     }
                 }
+                expandableListDetail.put(expandableResultHeadings.get(0),synons);
+
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -311,6 +322,10 @@ public class feature extends AppCompatActivity {
             return resultsToPrint;
         }
 
+      /*  public asyncResponse outputFromAsync = null;
+        public meaningQueryTask(asyncResponse delegate){
+            this.outputFromAsync = delegate;
+        } */
         @Override
         protected void onPostExecute(ArrayList<String> results)
         {

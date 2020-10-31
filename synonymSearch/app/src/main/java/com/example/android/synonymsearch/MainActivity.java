@@ -7,12 +7,14 @@ import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
     private MultiAutoCompleteTextView SearchBoxMACTV,MakeNotes;
     private FloatingActionButton fabMain;
@@ -56,6 +58,10 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton fabSpeak;
     private FloatingActionButton fabHistory;
     private FloatingActionButton fabNote;
+    private Spinner spinner;
+
+    String language;
+
     FirebaseDatabase rootnode ,rootnodeS;
     DatabaseReference reference,referenceS;
 
@@ -78,6 +84,27 @@ public class MainActivity extends AppCompatActivity
         fabNote = (FloatingActionButton) findViewById(R.id.fabnote) ;
         save=findViewById(R.id.save);
         clear=findViewById(R.id.clear);
+        spinner = (Spinner) findViewById(R.id.spinner);
+
+        spinner.setOnItemSelectedListener(this);
+        List<String> categories = new ArrayList<String>();
+        categories.add("en"); //English
+        categories.add("hi"); //
+        categories.add("es"); //
+        categories.add("fr"); //
+        categories.add("ja"); //
+        categories.add("ru"); //
+        categories.add("de"); //
+        categories.add("it"); //
+        categories.add("ko"); //
+        categories.add("pt-BR"); //
+        categories.add("ar"); //
+        categories.add("tr");//
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_spinner_item, categories);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
 
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +191,24 @@ public class MainActivity extends AppCompatActivity
         doMultiAutoComplete();
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
+    {
+        String item = parent.getItemAtPosition(pos).toString();
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        language = item;
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent)
+    {
+        String item = parent.getItemAtPosition(0).toString();
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        language = item;
+
+    }
+
     public void doMultiAutoComplete()
     {
         ArrayList<String> dictionaryAL = new ArrayList<>();
@@ -209,6 +254,8 @@ public class MainActivity extends AppCompatActivity
             Intent i=new Intent(getApplicationContext(),feature.class);
             wordIntent w=new wordIntent(wordQuery);
             i.putExtra("mykey", w);
+            langIntent l = new langIntent(language);
+            i.putExtra("langKey", l);
             startActivity(i);
 
 
@@ -218,8 +265,6 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 
 }

@@ -22,6 +22,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:prompt="@string/spinner_title"/>
+
 
         <MultiAutoCompleteTextView
             android:id="@+id/MAC_TV_search_box"
