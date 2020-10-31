@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         SearchBoxMACTV = (MultiAutoCompleteTextView) findViewById(R.id.MAC_TV_search_box);
-        MakeNotes=findViewById(R.id.MAC_TV_notes);
+        MakeNotes=(MultiAutoCompleteTextView) findViewById(R.id.MAC_TV_notes);
         fabMain = (FloatingActionButton) findViewById(R.id.fab_main);
         fabSpeak = (FloatingActionButton) findViewById(R.id.fabSpeak);
         fabHistory = (FloatingActionButton) findViewById(R.id.fabHistory) ;
@@ -229,6 +229,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         SearchBoxMACTV.setAdapter(adapter);
         SearchBoxMACTV.setTokenizer(new SpaceTokenizer());
+
+        MakeNotes.setAdapter(adapter);
+        MakeNotes.setTokenizer(new SpaceTokenizer());
 
     }
 
