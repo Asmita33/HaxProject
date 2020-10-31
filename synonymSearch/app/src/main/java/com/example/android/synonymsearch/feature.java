@@ -85,6 +85,10 @@ public class feature extends AppCompatActivity {
                 String toSpeak = meaningTV.getText().toString();
                 tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
                 isRotate = ViewAnimation.rotateFab(view, !isRotate);
+                if(!isRotate) {
+                    onPause();
+                    //isRotate=false;
+                }
             }
         });
 
@@ -102,6 +106,13 @@ public class feature extends AppCompatActivity {
         });
 
 
+    }
+    public void onPause(){
+        if(tts !=null){
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onPause();
     }
 
     private void makeWordSearchQuery()
@@ -121,7 +132,7 @@ public class feature extends AppCompatActivity {
 
         //  String wordQuery = SearchBoxMACTV.getText().toString();
 
-        //for printing meanings and examples
+        //for printing meanings and examples, synonyms
         URL meaningSearchUrl = fetchMeaning.buildUrl(language, wordQuery);
         new meaningQueryTask().execute(meaningSearchUrl);
 
@@ -212,7 +223,7 @@ public class feature extends AppCompatActivity {
             {
                 String toSpeak = expandableListDetail
                         .get(expandableResultHeadings.get(groupPos)).get(childPos);
-               // tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
 
                 ClipboardManager clipboard=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip=ClipData.newPlainText("", expandableResultHeadings.get(childPos));

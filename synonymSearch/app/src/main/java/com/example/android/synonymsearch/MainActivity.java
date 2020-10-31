@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private MultiAutoCompleteTextView SearchBoxMACTV,MakeNotes;
     private FloatingActionButton fabMain;
     boolean isRotate = false;
+    boolean pause=false;
     private FloatingActionButton fabSpeak;
     private FloatingActionButton fabHistory;
     private FloatingActionButton fabNote;
@@ -155,9 +156,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         fabSpeak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String toSpeak = SearchBoxMACTV.getText().toString();
-                tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                String toSpeak1 = SearchBoxMACTV.getText().toString();
+                tts.speak(toSpeak1, TextToSpeech.QUEUE_FLUSH, null);
+                String toSpeak2 = MakeNotes.getText().toString();
+                tts.speak(toSpeak2, TextToSpeech.QUEUE_FLUSH, null);
+
                 isRotate = ViewAnimation.rotateFab(view, !isRotate);
+                //if(!pause) {
+                    if(!isRotate) {
+                        onPause();
+                        isRotate=false;
+                    }
+                    //pause=!pause;
+                //}
             }
         });
 
@@ -189,6 +200,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         doMultiAutoComplete();
+    }
+    public void onPause(){
+        if(tts !=null){
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onPause();
     }
 
     @Override
